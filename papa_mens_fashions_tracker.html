@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Papa Men's Fashions</title>
+<style>
+*{box-sizing:border-box} body{margin:0;font-family:Arial,sans-serif;color:#2b2118;
+background:linear-gradient(135deg,rgba(62,39,20,.92),rgba(146,100,52,.9)),url("https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?auto=format&fit=crop&w=1800&q=80") center/cover fixed;}
+.container{max-width:1200px;margin:auto;padding:24px}
+header{background:rgba(255,248,238,.96);border-radius:20px;padding:24px;box-shadow:0 10px 30px #0005;margin-bottom:20px}
+h1{margin:0;font-size:32px;color:#5b351c} header p{margin:6px 0 0;color:#75583f}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.tab{border:0;padding:11px 17px;border-radius:10px;background:#ead8c2;color:#4b301c;cursor:pointer;font-weight:bold}.tab.active{background:#6e4324;color:white}
+.page{display:none}.page.active{display:block}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:15px;margin-bottom:20px}.card{background:rgba(255,250,244,.96);padding:20px;border-radius:16px;box-shadow:0 8px 22px #0004}.label{font-size:13px;color:#80664d}.value{font-size:24px;font-weight:bold;margin-top:8px;color:#58351e}
+.panel{background:rgba(255,250,244,.97);padding:22px;border-radius:16px;box-shadow:0 8px 22px #0004;margin-bottom:20px}h2{margin-top:0;color:#5b351c}
+form{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:13px}label{font-size:13px;font-weight:bold;color:#654a34}input,select{width:100%;padding:11px;border:1px solid #d6c1aa;border-radius:9px;background:#fff}button.primary{background:#6e4324;color:white;border:0;padding:12px 18px;border-radius:9px;font-weight:bold;cursor:pointer}button.danger{background:#9b3d2f;color:#fff;border:0;padding:8px 12px;border-radius:7px;cursor:pointer}
+table{width:100%;border-collapse:collapse;margin-top:15px;background:#fff}th,td{padding:11px;border-bottom:1px solid #eadfd3;text-align:left;font-size:14px}th{background:#ead8c2;color:#51341f}
+.notice{padding:12px;border-radius:9px;background:#f4e6d5;margin-bottom:15px;color:#654a34}.small{font-size:12px;color:#80664d}
+@media(max-width:600px){.container{padding:12px}header{padding:18px}h1{font-size:25px}.panel{padding:15px}table{font-size:12px}}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>👔 Papa Men's Fashions</h1>
+<p>Sales, Stock, Capital & Profit Tracker</p>
+<nav>
+<button class="tab active" onclick="showTab('dashboard',this)">Dashboard</button>
+<button class="tab" onclick="showTab('products',this)">Products</button>
+<button class="tab" onclick="showTab('sales',this)">Record Sale</button>
+<button class="tab" onclick="showTab('reports',this)">Reports</button>
+</nav>
+</header>
+
+<section id="dashboard" class="page active">
+<div class="cards">
+<div class="card"><div class="label">TOTAL CAPITAL USED</div><div class="value" id="capital">UGX 0</div></div>
+<div class="card"><div class="label">TOTAL SALES</div><div class="value" id="salesTotal">UGX 0</div></div>
+<div class="card"><div class="label">TOTAL PROFIT</div><div class="value" id="profit">UGX 0</div></div>
+<div class="card"><div class="label">CURRENT STOCK VALUE</div><div class="value" id="stockValue">UGX 0</div></div>
+<div class="card"><div class="label">ITEMS IN STOCK</div><div class="value" id="stockCount">0</div></div>
+</div>
+<div class="panel">
+<h2>Business Summary</h2>
+<div class="notice" id="summary">Add your products to begin tracking the business.</div>
+<p class="small">Capital used is calculated from the buying cost of products entered. Profit is calculated from selling price minus buying price for every recorded sale.</p>
+</div>
+</section>
+
+<section id="products" class="page">
+<div class="panel">
+<h2>➕ Add Product</h2>
+<form id="productForm">
+<div><label>Product name</label><input id="pname" required placeholder="e.g. T-Shirt"></div>
+<div><label>Category</label><input id="pcat" placeholder="e.g. T-Shirts"></div>
+<div><label>Quantity purchased</label><input id="pqty" type="number" min="1" required></div>
+<div><label>Buying price (UGX)</label><input id="pcost" type="number" min="0" required></div>
+<div><label>Selling price (UGX)</label><input id="pprice" type="number" min="0" required></div>
+<div><label>Supplier (optional)</label><input id="psupplier" placeholder="Supplier name"></div>
+<div><label>Date purchased</label><input id="pdate" type="date" required></div>
+<div style="align-self:end"><button class="primary">Save Product</button></div>
+</form>
+</div>
+<div class="panel"><h2>📦 Products & Stock</h2><div style="overflow:auto"><table><thead><tr><th>Product</th><th>Category</th><th>Stock</th><th>Buy Price</th><th>Sell Price</th><th>Capital</th><th>Action</th></tr></thead><tbody id="productTable"></tbody></table></div></div>
+</section>
+
+<section id="sales" class="page">
+<div class="panel">
+<h2>💰 Record a Sale</h2>
+<form id="saleForm">
+<div><label>Product</label><select id="sproduct" required></select></div>
+<div><label>Quantity sold</label><input id="sqty" type="number" min="1" required></div>
+<div><label>Payment method</label><select id="spay"><option>Cash</option><option>Mobile Money</option><option>Bank</option></select></div>
+<div><label>Date</label><input id="sdate" type="date" required></div>
+<div style="align-self:end"><button class="primary">Save Sale</button></div>
+</form>
+</div>
+<div class="panel"><h2>Recent Sales</h2><div style="overflow:auto"><table><thead><tr><th>Date</th><th>Product</th><th>Qty</th><th>Sales</th><th>Profit</th><th>Payment</th></tr></thead><tbody id="salesTable"></tbody></table></div></div>
+</section>
+
+<section id="reports" class="page">
+<div class="panel"><h2>📊 Reports</h2><div id="reportText"></div></div>
+<div class="panel">
+<h2>Data Backup</h2>
+<button class="primary" onclick="downloadData()">Download Backup</button>
+<button class="danger" onclick="clearAll()" style="margin-left:8px">Clear All Data</button>
+<p class="small">Keep a backup regularly so your records are safe.</p>
+</div>
+</section>
+</div>
+
+<script>
+const key='papaMensFashionsData';
+let data=JSON.parse(localStorage.getItem(key)||'{"products":[],"sales":[]}');
+const money=n=>'UGX '+Number(n||0).toLocaleString('en-US');
+const today=()=>new Date().toISOString().slice(0,10);
+document.getElementById('pdate').value=today(); document.getElementById('sdate').value=today();
+
+function save(){localStorage.setItem(key,JSON.stringify(data));render();}
+function showTab(id,btn){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));btn.classList.add('active');render();}
+
+document.getElementById('productForm').onsubmit=e=>{
+ e.preventDefault();
+ const p={id:Date.now(),name:pname.value,cat:pcat.value||'Other',qty:+pqty.value,cost:+pcost.value,price:+pprice.value,supplier:psupplier.value,date:pdate.value};
+ data.products.push(p); e.target.reset();pdate.value=today();save();alert('Product saved successfully!');
+};
+document.getElementById('saleForm').onsubmit=e=>{
+ e.preventDefault(); const p=data.products.find(x=>x.id==sproduct.value); const q=+sqty.value;
+ if(!p){alert('Please select a product.');return}
+ if(q>p.qty){alert('Not enough stock available.');return}
+ data.sales.push({id:Date.now(),productId:p.id,name:p.name,qty:q,revenue:q*p.price,profit:q*(p.price-p.cost),payment:spay.value,date:sdate.value});
+ p.qty-=q; e.target.reset();sdate.value=today();save();alert('Sale recorded!');
+};
+function delProduct(id){if(confirm('Delete this product?')){data.products=data.products.filter(p=>p.id!=id);save()}}
+function render(){
+ let capital=data.products.reduce((a,p)=>a+p.qty*p.cost,0)+data.sales.reduce((a,s)=>{let p=data.products.find(x=>x.id==s.productId);return a+(p?p.cost*s.qty:0)},0);
+ let totalSales=data.sales.reduce((a,s)=>a+s.revenue,0), profit=data.sales.reduce((a,s)=>a+s.profit,0);
+ let stockValue=data.products.reduce((a,p)=>a+p.qty*p.cost,0), stock=data.products.reduce((a,p)=>a+p.qty,0);
+ document.getElementById('capital').textContent=money(capital);document.getElementById('salesTotal').textContent=money(totalSales);document.getElementById('profit').textContent=money(profit);document.getElementById('stockValue').textContent=money(stockValue);document.getElementById('stockCount').textContent=stock;
+ document.getElementById('summary').textContent= data.products.length?`You have ${data.products.length} product type(s), ${stock} item(s) in stock, ${money(totalSales)} in recorded sales and ${money(profit)} gross profit.`:'Add your products to begin tracking the business.';
+ productTable.innerHTML=data.products.map(p=>`<tr><td>${p.name}</td><td>${p.cat}</td><td>${p.qty}</td><td>${money(p.cost)}</td><td>${money(p.price)}</td><td>${money(p.qty*p.cost)}</td><td><button class="danger" onclick="delProduct(${p.id})">Delete</button></td></tr>`).join('')||'<tr><td colspan="7">No products yet.</td></tr>';
+ sproduct.innerHTML=data.products.map(p=>`<option value="${p.id}">${p.name} — ${p.qty} left</option>`).join('');
+ salesTable.innerHTML=data.sales.slice().reverse().map(s=>`<tr><td>${s.date}</td><td>${s.name}</td><td>${s.qty}</td><td>${money(s.revenue)}</td><td>${money(s.profit)}</td><td>${s.payment}</td></tr>`).join('')||'<tr><td colspan="6">No sales recorded yet.</td></tr>';
+ reportText.innerHTML=`<p><b>Total capital currently tied up in remaining stock:</b> ${money(stockValue)}</p><p><b>Total sales recorded:</b> ${money(totalSales)}</p><p><b>Total gross profit:</b> ${money(profit)}</p><p><b>Items currently in stock:</b> ${stock}</p>`;
+}
+function downloadData(){const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='papa-mens-fashions-backup.json';a.click();}
+function clearAll(){if(confirm('This will erase all products and sales from this browser. Continue?')){data={products:[],sales:[]};save();}}
+render();
+</script>
+</body>
+</html>
